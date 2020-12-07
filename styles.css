@@ -1,1 +1,10 @@
-
+h1 {
+    text-align: center;
+}
+#mainDiv {
+    display: grid;
+    justify-content: center;
+}
+.cell-color {
+    background-color: cadetblue;
+}
