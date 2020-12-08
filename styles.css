@@ -7,4 +7,7 @@ h1 {
 }
 .cell-color {
     background-color: cadetblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
