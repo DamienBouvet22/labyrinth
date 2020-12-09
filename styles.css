@@ -1,6 +1,5 @@
 h1 {
     text-align: center;
-    color: mediumpurple;
 }
 #mainDiv {
     display: grid;
@@ -11,4 +10,11 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.btn {
+    font-size: 24px !important;
+
+}
+.row {
+    padding: 30px
 }
