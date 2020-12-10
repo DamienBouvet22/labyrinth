@@ -7,17 +7,36 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-<h1>MAZE</h1>
-<div class="row" style="justify-content: center">
-    <button type="button" class="btn btn-outline-danger" onClick="window.location.reload();">Clear Maze</button>
+<div class="row">
+    <img src="maze.jpg" alt="The Maze" width="400px" height="auto">
 </div>
-<div class="row p30" style="justify-content: center">
+<div class="row">
+    <h6 class="col-12 text-center">Step 1: Generate a new maze by typing size and example and hit Generate</h6>
+    <h6 class="col-12 text-center">If the default maze pleases you, you can skip to step 2</h6>
+</div>
+<div class="row">
+    <input type="text" id="size" placeholder="  Size (3-25)">
+    <input type="text" id="example" placeholder="  Example (0-2)">
+</div>
+<div class="row">
+    <button type="button" onclick="generate()" class="btn btn-outline-info">Generate Maze</button>
+</div>
+<div class="row pt20">
+    <h6>Step 2: Click anywhere to choose the exit point of the maze</h6>
+</div>
+<div class="row pt20">
+    <h6>Step 3: Choose your algorithm to solve the maze and enjoy!</h6>
+</div>
+<div class="row pb20">
     <button id="dfsIterative" type="button" class="btn btn-outline-primary m10">DFS Iterative</button>
     <button id="dfsRecursive" type="button" class="btn btn-outline-secondary m10">DFS Recursive</button>
-    <button id="bfsIterative" type="button" class="btn btn-outline-success m10">BFS Iterative</button>
-    <button id="bfsRecursive" type="button" class="btn btn-outline-warning m10">BFS Recursive</button>
+    <button id="bfsIterative" type="button" class="btn btn-outline-warning m10">BFS Iterative</button>
 </div>
 <div id="mainDiv"></div>
 <script src="main.js"></script>
+<script
+        src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+        crossorigin="anonymous"></script>
 </body>
 </html>

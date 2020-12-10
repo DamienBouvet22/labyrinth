@@ -1,44 +1,48 @@
-async function loadJson() {
-
+async function loadJson(size, example) {
     const data = await fetch('labyrinthes.json')
         .then(response => response.json());
 
-    let gridSize = 15;
-    let mazeName = 'ex-0';
-    // console.log(data)
+    let gridSize = size;
+    let mazeName = 'ex-'+example;
     return {
         gridSize: gridSize,
         cellData: data[gridSize][mazeName]
     };
 }
-
-function createMaze(mazeBoard) {
+function createMaze(mazeBoard, size) {
 
     // We destructure the object
     const {cellData, gridSize} = mazeBoard;
 
+    let width = 50;
+    if (size > 18) {
+        width = 30;
+    }
+
     // We create the grid layout
     const mainDiv = document.getElementById('mainDiv');
-    mainDiv.style.gridTemplateColumns = 'repeat(' + gridSize + ', 100px)';
-    mainDiv.style.gridTemplateRows = 'repeat(' + gridSize + ', 100px)';
+    mainDiv.style.gridTemplateColumns = 'repeat(' + gridSize + ',' + width + 'px)';
+    mainDiv.style.gridTemplateRows = 'repeat(' + gridSize + ',' + width + 'px)';
+    let selectedTarget = null;
 
     // We loop through to create cells and walls
     for (let i = 0; i < cellData.length; i++) {
         let cell = document.createElement('div');
+            cell.addEventListener('click', function() {
+                if (selectedTarget === null){
+                   selectedTarget = i;
+                   cell.style.backgroundColor = "green"
+                }
+            }, false);
         let currentCell = cellData[i];
         // We add the cellNumber and adjacent cells property to the cellData Object
         currentCell.cellNumber = i;
         currentCell.adjacentCells = [];
         // We add the cellNumber in the display
-        cell.innerHTML += '<div>' +(currentCell.cellNumber)+ '</div>';
+        // cell.innerHTML += '<div>' +i+ '</div>';
         // We set the first cell in orange
         if (i === 0) {
             cell.style.backgroundColor = 'orange'
-        }
-
-        // We get the last iteration to set the cell in green
-        if (i === cellData.length - 1) {
-            cell.style.backgroundColor = "green"
         }
         // We apply the class for the color
         cell.className = 'cell-color cell-' + i;
@@ -68,16 +72,25 @@ function createMaze(mazeBoard) {
         // console.log('Cell ' + currentCell.cellNumber + ' : ', currentCell)
     }
     document.getElementById('dfsIterative').addEventListener('click', function() {
-        dfsIterative(cellData[0], cellData);
+        if(selectedTarget === null){
+            alert('Pick an exit cell')
+        } else {
+        dfsIterative(cellData[0], selectedTarget, cellData);
+        }
     }, false);
     document.getElementById('dfsRecursive').addEventListener('click', function() {
-        dfsRecursive(cellData[0], cellData);
+        if(selectedTarget === null){
+            alert('Pick an exit cell')
+        } else {
+            dfsRecursive(cellData[0], selectedTarget, cellData);
+        }
     }, false);
     document.getElementById('bfsIterative').addEventListener('click', function() {
-        bfsIterative(cellData[0], cellData);
-    }, false);
-    document.getElementById('bfsRecursive').addEventListener('click', function() {
-        alert("Work in progress");
+        if(selectedTarget === null){
+            alert('Pick an exit cell')
+        } else {
+            bfsIterative(cellData[0], selectedTarget, cellData);
+        }
     }, false);
 
     //dfsRecursive(cellData[0], cellData)
@@ -118,17 +131,17 @@ async function dfs(startPos, targetPos, grid) {
     }
 }
 
-const path = [];
+let path = [];
 
-async function dfsIterative(vertex, grid) {
-    const target = grid[grid.length-1]
+async function dfsIterative(vertex, targetCell, grid) {
+    const target = grid[targetCell];
     const stack = [];
     stack.push(vertex);
     while(stack.length) {
         if (vertex === target) {
             console.log('you reached cell ' + vertex.cellNumber + ' : Congrats')
-            console.log('Optimal Path : ', path)
-            displayPath(path, grid.length-1);
+            console.log('Path : ', path)
+            displayPath(path, targetCell);
             return;
         }
         vertex = stack.pop();
@@ -143,54 +156,54 @@ async function dfsIterative(vertex, grid) {
     }
 }
 
-async function dfsRecursive(vertex, grid) {
-    const target = grid[grid.length-1]
+async function dfsRecursive(vertex, targetCell, grid) {
+    const target = grid[targetCell];
     path.push(vertex.cellNumber)
     vertex.visited = true;
     if(vertex === target) {
         console.log('you reached cell ' + vertex.cellNumber + ' : Congrats');
-        console.log('path', path);
-        displayPath(path, grid.length-1);
+        console.log('Path', path);
+        displayPath(path, targetCell);
         return true;
     }
     for (let node of vertex.adjacentCells.reverse()) {
         if(!grid[node].visited) {
-            if (await dfsRecursive(grid[node], grid)) {
+            if (await dfsRecursive(grid[node], targetCell, grid)) {
                 return true;
             }
         }
     }
 }
 
-async function bfsIterative(vertex, grid) {
-    const target = grid[grid.length-1]
-    const stack = [];
-    stack.push(vertex);
-    while(stack.length) {
+async function bfsIterative(vertex, targetCell, grid) {
+    const target = grid[targetCell];
+    const queue = [];
+    queue.push(vertex);
+    while(queue.length) {
         if (vertex === target) {
             console.log('you reached cell ' + vertex.cellNumber + ' : Congrats')
-            console.log('Optimal Path : ', path)
-            displayPath(path, grid.length-1);
+            console.log('Path : ', path)
+            displayPath(path, targetCell);
             return;
         }
-        vertex = stack.shift();
+        vertex = queue.shift();
         if (!vertex.visited) {
             vertex.visited = true;
-            stack.push(vertex);
+            queue.push(vertex);
             path.push(vertex.cellNumber);
             for (let node of vertex.adjacentCells) {
-                stack.push(grid[node]);
+                queue.push(grid[node]);
             }
         }
     }
 }
 
-async function displayPath(optimalPath, lastCell) {
+async function displayPath(optimalPath, targetCell) {
     let displayDfsPath
     for (let i = 0; i < optimalPath.length; i++) {
         if (optimalPath[i] !== 0) {
             displayDfsPath = document.getElementsByClassName('cell-' + optimalPath[i]);
-            if (optimalPath[i] !== lastCell) {
+            if (optimalPath[i] !== targetCell) {
                 displayDfsPath[0].style.background = 'mediumpurple';
         } else {
             displayDfsPath[0].style.background = 'springgreen';
@@ -199,11 +212,24 @@ async function displayPath(optimalPath, lastCell) {
     await timer(50);
     }
 }
+let mazeSize = 15;
+let mazeExample = 0;
 
+function generate() {
+    mazeSize = parseInt(document.getElementById('size').value);
+    mazeExample = parseInt(document.getElementById('example').value);
 
-async function main() {
+    if (isNaN(mazeSize) || isNaN(mazeExample) || mazeSize < 3 || mazeSize > 25 || mazeExample < 0 || mazeExample > 2) {
+        alert("size must be between 3 and 25 and example must be 0, 1 or 2");
+    } else {
+        path = [];
+        $("#mainDiv").load(" #mainDiv > *");
+        main(mazeSize, mazeExample);
+    }
+}
+async function main(s, e) {
     // Async main function to call our maze generator functions
-    createMaze(await loadJson());
+    createMaze(await loadJson(s, e), s);
 }
 
-main()
+main(mazeSize, mazeExample)

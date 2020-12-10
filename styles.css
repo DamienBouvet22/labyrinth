@@ -1,9 +1,13 @@
 h1 {
     text-align: center;
+    padding-bottom: 10px;
+    font-weight: bold;
+    color: cadetblue;
 }
 #mainDiv {
     display: grid;
     justify-content: center;
+    padding-bottom: 50px;
 }
 .cell-color {
     background-color: cadetblue;
@@ -12,11 +16,32 @@ h1 {
     align-items: center;
 }
 .btn {
-    font-size: 24px !important;
+    font-size: 14px !important;
+    border-radius: 30px !important;
 }
 .m10 {
     margin: 10px;
 }
 .p30 {
     padding: 30px
+}
+input {
+    margin: 20px !important;
+    border-radius: 30px;
+}
+.row {
+    justify-content: center;
+}
+.pb20 {
+    padding-bottom: 20px;
+}
+.pt20 {
+    padding-top: 20px;
+}
+img {
+    margin-top: -40px;
+    margin-bottom: -20px;
+}
+h6 {
+    font-size: 14px !important;
 }
