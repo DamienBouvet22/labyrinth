@@ -9,7 +9,13 @@
 <body>
 <h1>MAZE</h1>
 <div class="row" style="justify-content: center">
-    <button id="button" type="button" class="btn btn-warning">Resolve maze</button>
+    <button type="button" class="btn btn-outline-danger" onClick="window.location.reload();">Clear Maze</button>
+</div>
+<div class="row p30" style="justify-content: center">
+    <button id="dfsIterative" type="button" class="btn btn-outline-primary m10">DFS Iterative</button>
+    <button id="dfsRecursive" type="button" class="btn btn-outline-secondary m10">DFS Recursive</button>
+    <button id="bfsIterative" type="button" class="btn btn-outline-success m10">BFS Iterative</button>
+    <button id="bfsRecursive" type="button" class="btn btn-outline-warning m10">BFS Recursive</button>
 </div>
 <div id="mainDiv"></div>
 <script src="main.js"></script>

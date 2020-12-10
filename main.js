@@ -3,8 +3,8 @@ async function loadJson() {
     const data = await fetch('labyrinthes.json')
         .then(response => response.json());
 
-    let gridSize = 6;
-    let mazeName = 'ex-2';
+    let gridSize = 15;
+    let mazeName = 'ex-0';
     // console.log(data)
     return {
         gridSize: gridSize,
@@ -67,9 +67,19 @@ function createMaze(mazeBoard) {
         mainDiv.appendChild(cell)
         // console.log('Cell ' + currentCell.cellNumber + ' : ', currentCell)
     }
-    document.getElementById('button').addEventListener('click', function() {
+    document.getElementById('dfsIterative').addEventListener('click', function() {
+        dfsIterative(cellData[0], cellData);
+    }, false);
+    document.getElementById('dfsRecursive').addEventListener('click', function() {
         dfsRecursive(cellData[0], cellData);
     }, false);
+    document.getElementById('bfsIterative').addEventListener('click', function() {
+        bfsIterative(cellData[0], cellData);
+    }, false);
+    document.getElementById('bfsRecursive').addEventListener('click', function() {
+        alert("Work in progress");
+    }, false);
+
     //dfsRecursive(cellData[0], cellData)
 }
 
@@ -147,6 +157,29 @@ async function dfsRecursive(vertex, grid) {
         if(!grid[node].visited) {
             if (await dfsRecursive(grid[node], grid)) {
                 return true;
+            }
+        }
+    }
+}
+
+async function bfsIterative(vertex, grid) {
+    const target = grid[grid.length-1]
+    const stack = [];
+    stack.push(vertex);
+    while(stack.length) {
+        if (vertex === target) {
+            console.log('you reached cell ' + vertex.cellNumber + ' : Congrats')
+            console.log('Optimal Path : ', path)
+            displayPath(path, grid.length-1);
+            return;
+        }
+        vertex = stack.shift();
+        if (!vertex.visited) {
+            vertex.visited = true;
+            stack.push(vertex);
+            path.push(vertex.cellNumber);
+            for (let node of vertex.adjacentCells) {
+                stack.push(grid[node]);
             }
         }
     }

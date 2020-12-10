@@ -13,8 +13,10 @@ h1 {
 }
 .btn {
     font-size: 24px !important;
-
 }
-.row {
+.m10 {
+    margin: 10px;
+}
+.p30 {
     padding: 30px
 }
