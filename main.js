@@ -73,7 +73,7 @@ function createMaze(mazeBoard, size) {
     }
     document.getElementById('dfsIterative').addEventListener('click', function() {
         if(selectedTarget === null){
-            alert('Pick an exit cell')
+            alert('Pick an exit')
         } else {
         dfsIterative(cellData[0], selectedTarget, cellData);
         }
